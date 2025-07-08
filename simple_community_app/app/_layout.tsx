@@ -1,44 +1,33 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { Slot, usePathname, useRouter } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import { useRouter,Stack } from 'expo-router';
+import 'react-native-reanimated';
+import { RecoilRoot } from 'recoil';
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
   const router = useRouter();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
+  
+  const pathname = usePathname();
 
   useEffect( ()=>{
+  
     const getToken = async ()=>{
-      try{
+          const path = pathname;
+     const publicPaths = ['/login', '/signup'];
         const token = await AsyncStorage.getItem("token");
-        if(!token){
+        if(!token &&  !publicPaths.includes(path)){
           router.replace("/login");
-        }
-      }catch(err){
-        console.log(err);
       }
     }
     getToken();
-  },[router])
+  },[router,pathname])
 
-  if (!loaded) {
-    // Async font loading only occurs in development.
-    return null;
-  }
+ 
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
+    <RecoilRoot>
+      <Slot></Slot>
       <StatusBar style="auto" />
-    </ThemeProvider>
+    </RecoilRoot>
   );
 }
