@@ -1,9 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Slot, usePathname, useRouter } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
+import { Slot, Stack, usePathname, useRouter } from 'expo-router';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
-import { RecoilRoot } from 'recoil';
 export default function RootLayout() {
   const router = useRouter();
   
@@ -25,9 +23,23 @@ export default function RootLayout() {
  
 
   return (
-    <RecoilRoot>
-      <Slot></Slot>
-      <StatusBar style="auto" />
-    </RecoilRoot>
+    <Stack
+      screenOptions={{
+        gestureEnabled: true,
+        headerShown: false // 스와이프 백 제스처 활성화
+      }}
+    >
+      <Stack.Screen name="index"
+        options={{
+          gestureEnabled: false, // ✅ index 만 스와이프 백 비활성화
+        }}></Stack.Screen>
+      <Stack.Screen name="login"
+        options={{
+          gestureEnabled: false, // ✅ index 만 스와이프 백 비활성화
+        }}></Stack.Screen>
+     
+      {/* Slot이 Stack 안에 있어야 네비게이션 스택 적용됨 */}
+      <Slot />
+    </Stack>
   );
 }

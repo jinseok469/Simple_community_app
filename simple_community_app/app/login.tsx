@@ -14,6 +14,7 @@ const Login = () =>{
   const router = useRouter();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [correct , setCorrect] = useState<boolean>(true);
 const setUser = useUserStore((state) => state.setUser);
 
   async function fetchUserData(uid: string) {
@@ -37,7 +38,6 @@ const setUser = useUserStore((state) => state.setUser);
     console.log("로그인 성공, UID:", user.uid);
     const token = await user.getIdToken();
     await AsyncStorage.setItem("token",token);
-    // 로그인 성공 후 Firestore에서 유저 데이터 조회 예시
      const userInfo = await fetchUserData(user.uid);
       setUser({
     uid: user.uid,
@@ -47,6 +47,7 @@ const setUser = useUserStore((state) => state.setUser);
     router.push("/")
   } catch (error) {
     console.error("로그인 실패:", error);
+    setCorrect(false);
     // 에러 처리 (비밀번호 틀림, 네트워크 오류 등)
   }
 }
@@ -62,14 +63,21 @@ const setUser = useUserStore((state) => state.setUser);
           </ThemedText>
         </ThemedView>
         <ThemedView style={styles.main}>
+          {!correct &&
           <ThemedText style={styles.notice}>
-<FontAwesome name="exclamation-triangle" size={20} color="#1F319D" /> Incorrect email or password!</ThemedText>
+<FontAwesome name="exclamation-triangle" size={20} color="#1F319D" /> Incorrect email or password!</ThemedText>}
          <TextInput value={email} onChangeText={(text)=>setEmail(text)} style={styles.main_input} placeholder="email" placeholderTextColor="lightgray"></TextInput>
          <TextInput value={password} onChangeText={(text)=>setPassword(text)} style={styles.main_input} secureTextEntry={true} placeholder="password" placeholderTextColor="lightgray"></TextInput>
          <TouchableOpacity style={styles.signin_button} onPress={()=>login(email,password)}>
           <ThemedText style={styles.signin_button_text}>Sign in</ThemedText>
          </TouchableOpacity>
-         <ThemedText style={styles.footer}>Don&lsquo;t have an account? <Link href="/signup" style={styles.footer_link}> Sign up</Link></ThemedText>
+       <ThemedView style={{ flexDirection: "row", justifyContent: "center", flexWrap: "wrap" }}>
+  <ThemedText style={styles.footer}>Don&apos;t have an account?</ThemedText>
+  <Link href="/signup" asChild>
+    <ThemedText style={styles.footer_link}> Sign up</ThemedText>
+  </Link>
+</ThemedView>
+
         </ThemedView>
     </ThemedView>
 
