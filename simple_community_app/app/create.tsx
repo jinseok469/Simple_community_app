@@ -6,7 +6,7 @@ import ImageAttachButton from "../components/ImageAttachButton";
 import { ThemedText } from "../components/ThemedText";
 import { ThemedView } from "../components/ThemedView";
 import { createPost } from "../hooks/createPost";
-import { useUserStore } from "./store/useUserStore";
+import { useUserStore } from "../store/useUserStore";
 
 const Create = () =>{
   const [text, setText] = useState("");

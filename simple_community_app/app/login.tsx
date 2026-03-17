@@ -9,7 +9,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { ThemedText } from "../components/ThemedText";
 import { ThemedView } from "../components/ThemedView";
 import { auth, db } from '../firebaseConfig';
-import { useUserStore } from './store/useUserStore';
+import { useUserStore } from '../store/useUserStore';
 const Login = () =>{
   const router = useRouter();
   const [email, setEmail] = useState<string>("");

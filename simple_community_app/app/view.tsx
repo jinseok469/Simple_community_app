@@ -7,8 +7,8 @@ import FloatingButton from "../components/FloatingButton";
 import { ThemedText } from "../components/ThemedText";
 import { ThemedView } from "../components/ThemedView";
 import { db } from "../firebaseConfig";
-import { usePostStore } from "./store/usePostStore";
-import { useUserStore } from "./store/useUserStore";
+import { usePostStore } from "../store/usePostStore";
+import { useUserStore } from "../store/useUserStore";
 const View = () =>{
    const { selectedPostId } = usePostStore();
   const [post, setPost] = useState<any>(null);
